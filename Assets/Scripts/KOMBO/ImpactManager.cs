@@ -33,17 +33,24 @@ namespace Hitbox.Kombo
 
         private void OnImpact(object sender, ImpactPointControlEventArgs e)
         {
-            Debug.Log(string.Format("Impact: Player [{0}], Position [{1}], Accelerometer [{2}]",
-                e.playerIndex,
-                e.impactPosition,
-                e.accelerometer));
+            // ----------- A CHECKER IF UTILE OU PAS -----------
+            //if (Time.time - timerOffHit0 > delayOffHit)
+            //{
+            //    SetImpact(e.impactPosition);
+            //    timerOffHit0 = Time.time;
+            //}
+            // -------------------------------------------------
+
+            SetImpact(e.impactPosition);
         }
 
         private void SetImpact(Vector2 position2D_)
         {
             // Display a mark where impacts are detected
-            Vector3 pos3DSprite_ = new Vector3(position2D_.x, position2D_.y, this.gameObject.transform.position.z + 10f); // set sprite in front of Hitbox camera
+            Vector3 pos3DSprite_ = new Vector3(position2D_.x, position2D_.y, this.gameObject.transform.position.z + 100f); // set sprite in front of Hitbox camera
             Instantiate(_hitPrefabs, pos3DSprite_, Quaternion.identity, this.gameObject.transform);
+
+            this.gameObject.GetComponent<TargetsManager>().GetImpact(position2D_);
         }
 
 #if UNITY_EDITOR

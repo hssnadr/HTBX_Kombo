@@ -73,8 +73,6 @@ namespace Hitbox.Kombo
 
     public class TargetsManager : MonoBehaviour
     {
-        public ExampleSerialController serialController;
-
         public GameObject targetPrefab ;
         List<GameObject> targetsList;       // list of current targets
         List<Color> _reachTargetsColor;      // colors of reached targets
@@ -91,7 +89,6 @@ namespace Hitbox.Kombo
         private float delayOffHit = 0.2f ;
         private float timerOffHit0 = 0;
 
-        [SerializeField]
         private Camera _hitboxCamera;
 
         private int _score = 0 ;
@@ -99,16 +96,6 @@ namespace Hitbox.Kombo
         public Text scoreText ;
 
         private bool isWaiting = false;
-
-        private void OnEnable()
-        {
-            ImpactPointControl.onImpact += OnImpact;
-        }
-
-        private void OnDisable()
-        {
-            ImpactPointControl.onImpact -= OnImpact;
-        }
 
         private void Awake()
         {
@@ -120,17 +107,9 @@ namespace Hitbox.Kombo
             scoreText.text = "";
         }
 
-        private void OnImpact(object sender, ImpactPointControlEventArgs e)
+        public void GetImpact(Vector2 position2D_)
         {
-            if (Time.time - timerOffHit0 > delayOffHit) {
-                OnImpact(e.impactPosition);
-                timerOffHit0 = Time.time;
-            }
-        }
-
-        private void OnImpact(Vector2 position2D_)
-        {
-            Vector3 position3D_ = new Vector3(position2D_.x, position2D_.y, 200);
+            Vector3 position3D_ = new Vector3(position2D_.x, position2D_.y, this.gameObject.transform.position.z + 50f);
 
             Vector3 cameraForward = _hitboxCamera.transform.forward;
             Debug.DrawRay(position2D_, cameraForward * 10000, Color.yellow, 10.0f);
@@ -274,8 +253,6 @@ namespace Hitbox.Kombo
                     }
                 }
             }
-
-            //impact.transform.position = new Vector3(position3D_.x, position3D_.y, 800); // display a mark where impacts are detected
         }
 
         private void SetTarget(Vector3 position_, Color colTarget_, float angleDirection_, TargetProperties targetProp_)
@@ -312,26 +289,13 @@ namespace Hitbox.Kombo
             isWaiting = true;
             yield return new WaitForSeconds(5.0f);
             scoreText.text = "";
-            serialController.ScreenSaver();
+            //serialController.ScreenSaver();
             isWaiting = false;
         }
 
 
-        void OnMouseDown()
-        {
-            Vector3 mousePosition = Input.mousePosition;
-            Debug.Log(mousePosition);
-            if (!_hitboxCamera.orthographic)
-                mousePosition.z = this.transform.position.z;
-            OnImpact(_hitboxCamera.ScreenToWorldPoint(mousePosition));
-        }
-
         private void Update()
         {
-            // Need to be into Update loop to be trigger without clicking on specific object
-            if (Input.GetMouseButtonDown(0))
-                OnMouseDown();
-
             for (int i = 0; i < targetsList.Count; i++) {
                 if (targetsList[i] == null)
                     targetsList.RemoveAt(i);
@@ -346,7 +310,7 @@ namespace Hitbox.Kombo
                     _reachTargetsColor.Clear();
                     _reachTargetsPosition.Clear();
 
-                    serialController.EndGame();
+                    //serialController.EndGame();
 
                     StartCoroutine(WaitForEnd());
                 }
