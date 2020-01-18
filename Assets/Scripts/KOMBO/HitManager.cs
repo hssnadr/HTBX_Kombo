@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace Hitbox.Kombo
 {
-    public class ImpactManager : MonoBehaviour
+    public class HitManager : MonoBehaviour
     {
         public ExampleSerialController serialController;
         private Camera _hitboxCamera;
@@ -18,12 +18,12 @@ namespace Hitbox.Kombo
 
         private void OnEnable()
         {
-            ImpactPointControl.onImpact += OnImpact;
+            ImpactPointControl.onImpact += OnHit;
         }
 
         private void OnDisable()
         {
-            ImpactPointControl.onImpact -= OnImpact;
+            ImpactPointControl.onImpact -= OnHit;
         }
 
         private void Awake()
@@ -31,7 +31,7 @@ namespace Hitbox.Kombo
             _hitboxCamera = this.gameObject.GetComponent<Camera>();
         }
 
-        private void OnImpact(object sender, ImpactPointControlEventArgs e)
+        private void OnHit(object sender, ImpactPointControlEventArgs e)
         {
             // ----------- A CHECKER IF UTILE OU PAS -----------
             //if (Time.time - timerOffHit0 > delayOffHit)

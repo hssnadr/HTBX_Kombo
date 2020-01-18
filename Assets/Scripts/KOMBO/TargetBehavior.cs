@@ -15,6 +15,13 @@ namespace Hitbox.Kombo
         private float _lifeTime = 5.0f;                     // default lifetime in second
         private float _timeBorn;                            // time born from game start
 
+        /// <summary>
+        /// Prefab of the feedback object.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Prefab of the feedback object.")]
+        private ImpactFeedbackAnimator _impactFeedbackPrefab = null;
+
         void Awake()
         {
             render = GetComponent<Renderer>();
@@ -76,13 +83,27 @@ namespace Hitbox.Kombo
             }
         }
 
+        public void GetImpact()
+        {
+            // Trigger explose animation = instantiate impact explosion
+            if (_impactFeedbackPrefab != null)
+            {
+                var go = Instantiate(_impactFeedbackPrefab, this.transform.position, Quaternion.identity);
+                go.gameObject.layer = this.gameObject.layer;
+            }
+
+            // Destroy target
+            this.destroyTarget();
+        }
+
         void OnBecameInvisible()
         {
             this.destroyTarget();
         }
 
-        public void destroyTarget()
+        private void destroyTarget()
         {
+            // Destroy current target
             Destroy(this.gameObject);
         }
     }

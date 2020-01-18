@@ -124,7 +124,7 @@ namespace Hitbox.Kombo
                     if (hit.collider != null && hit.transform.tag == "target")
                     {
                         targetColor_ = hit.collider.GetComponent<TargetBehavior>().GetColor();
-                        hit.collider.GetComponent<TargetBehavior>().destroyTarget();
+                        hit.collider.GetComponent<TargetBehavior>().GetImpact();
                         isTrigger_ = true;
                     }
                 }
