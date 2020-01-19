@@ -105,5 +105,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a47ab563ec30127449c6faa97c6828d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _impactFeedbackPrefab: {fileID: 6539925932060651790, guid: 6b5fd7b265e49444b9dc7f03879e578a,
+  _hitFeedbackPrefab: {fileID: 5864034969425394615, guid: 6b5fd7b265e49444b9dc7f03879e578a,
     type: 3}

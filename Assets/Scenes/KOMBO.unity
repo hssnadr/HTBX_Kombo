@@ -254,12 +254,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 197fc10ee91ed9e4ca7805d3bd05e6fb, type: 3}
---- !u!1 &383212594 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6291402478145702181, guid: 197fc10ee91ed9e4ca7805d3bd05e6fb,
-    type: 3}
-  m_PrefabInstance: {fileID: 383212593}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &597049762
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,7 +348,7 @@ GameObject:
   m_Component:
   - component: {fileID: 833152887}
   - component: {fileID: 833152886}
-  - component: {fileID: 833152889}
+  - component: {fileID: 833152890}
   - component: {fileID: 833152888}
   m_Layer: 0
   m_Name: RenderCamera_Player1
@@ -449,9 +443,8 @@ MonoBehaviour:
     _transSpeed: 0
     _lifeTime: 1
     _scale: 19
-  impact: {fileID: 383212594}
   scoreText: {fileID: 2106998358}
---- !u!114 &833152889
+--- !u!114 &833152890
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -465,7 +458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serialController: {fileID: 1644190784}
   _debugCamera: {fileID: 597049765}
-  _hitPrefabs: {fileID: 7726583474970102550, guid: 8315c5c3b12da6142ac39f6d0b62bab4,
+  _impactPrefabs: {fileID: 7726583474970102550, guid: 8315c5c3b12da6142ac39f6d0b62bab4,
     type: 3}
 --- !u!1 &1523793887
 GameObject:
@@ -779,72 +772,3 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!1001 &2474308290203208279
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 56336954199897682, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 56336954199897682, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 56336954199897682, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 56336954199897682, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 56336954199897682, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 56336954199897682, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 56336954199897682, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 56336954199897682, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 56336954199897682, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 56336954199897682, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 56336954199897682, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 62434180853663522, guid: 6b5fd7b265e49444b9dc7f03879e578a,
-        type: 3}
-      propertyPath: m_Name
-      value: ImpactFeedback
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6b5fd7b265e49444b9dc7f03879e578a, type: 3}

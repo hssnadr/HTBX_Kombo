@@ -6,7 +6,7 @@ namespace Hitbox.Kombo
 {
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(MeshRenderer))]
-    public class ImpactFeedbackAnimator : MonoBehaviour
+    public class HitFeedbackAnimator : MonoBehaviour
     {
         /// <summary>
         /// Color of the material

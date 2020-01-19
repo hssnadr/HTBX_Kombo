@@ -20,7 +20,7 @@ namespace Hitbox.Kombo
         /// </summary>
         [SerializeField]
         [Tooltip("Prefab of the feedback object.")]
-        private ImpactFeedbackAnimator _impactFeedbackPrefab = null;
+        private HitFeedbackAnimator _hitFeedbackPrefab = null;
 
         void Awake()
         {
@@ -83,12 +83,12 @@ namespace Hitbox.Kombo
             }
         }
 
-        public void GetImpact()
+        public void SetHit()
         {
             // Trigger explose animation = instantiate impact explosion
-            if (_impactFeedbackPrefab != null)
+            if (_hitFeedbackPrefab != null)
             {
-                var go = Instantiate(_impactFeedbackPrefab, this.transform.position, Quaternion.identity);
+                var go = Instantiate(_hitFeedbackPrefab, this.transform.position, Quaternion.identity);
                 go.gameObject.layer = this.gameObject.layer;
             }
 

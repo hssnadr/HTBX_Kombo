@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace Hitbox.Kombo
 {
-    public class HitManager : MonoBehaviour
+    public class ImpactManager : MonoBehaviour
     {
         public ExampleSerialController serialController;
         private Camera _hitboxCamera;
@@ -14,7 +14,7 @@ namespace Hitbox.Kombo
         private Camera _debugCamera;
 
         [SerializeField]
-        private GameObject _hitPrefabs;
+        private GameObject _impactPrefabs;
 
         private void OnEnable()
         {
@@ -48,7 +48,7 @@ namespace Hitbox.Kombo
         {
             // Display a mark where impacts are detected
             Vector3 pos3DSprite_ = new Vector3(position2D_.x, position2D_.y, this.gameObject.transform.position.z + 100f); // set sprite in front of Hitbox camera
-            Instantiate(_hitPrefabs, pos3DSprite_, Quaternion.identity, this.gameObject.transform);
+            Instantiate(_impactPrefabs, pos3DSprite_, Quaternion.identity, this.gameObject.transform);
 
             this.gameObject.GetComponent<TargetsManager>().GetImpact(position2D_);
         }
@@ -67,7 +67,7 @@ namespace Hitbox.Kombo
             // Need to be into Update loop to be trigger without clicking on specific object
             if (Input.GetMouseButtonDown(0))
                 OnMouseDown();
-#endif
         }
+#endif
     }
 }

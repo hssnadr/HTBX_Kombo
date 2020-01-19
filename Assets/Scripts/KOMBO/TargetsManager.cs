@@ -85,10 +85,6 @@ namespace Hitbox.Kombo
         [SerializeField]
         private TargetProperties _targetPropLvl3 = new TargetProperties(1.0f, 30.0f, 200.0f, -300.0f);  // White
 
-        public GameObject impact;           // prefab to show where the impacts are detected
-        private float delayOffHit = 0.2f ;
-        private float timerOffHit0 = 0;
-
         private Camera _hitboxCamera;
 
         private int _score = 0 ;
@@ -124,7 +120,7 @@ namespace Hitbox.Kombo
                     if (hit.collider != null && hit.transform.tag == "target")
                     {
                         targetColor_ = hit.collider.GetComponent<TargetBehavior>().GetColor();
-                        hit.collider.GetComponent<TargetBehavior>().GetImpact();
+                        hit.collider.GetComponent<TargetBehavior>().SetHit();
                         isTrigger_ = true;
                     }
                 }
