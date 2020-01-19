@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4782973752803891190}
   - component: {fileID: 4782973752803891194}
   - component: {fileID: 4782973752803891197}
+  - component: {fileID: -8347172203812179659}
   m_Layer: 0
   m_Name: ScoreGaugePrefab
   m_TagString: Untagged
@@ -102,7 +103,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4782973752803891191}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 7cd6d460adfd4c24ea70621db0fb93d0, type: 2}
   m_CullingMode: 0
@@ -125,3 +126,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6474016b34cab74db6054d34c0b7e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-8347172203812179659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4782973752803891191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c5a8f9590764889af26f2fe3571e42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _score: 100
