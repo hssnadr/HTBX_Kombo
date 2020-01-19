@@ -142,18 +142,7 @@ namespace Hitbox.Kombo
             {
                 Color[] colTargets_;
 
-                if (targetsList.Count == 0)
-                {
-                    //colTargets_ = new Color[3];
-                    //colTargets_[0] = Color.red;
-                    //colTargets_[1] = Color.green;
-                    //colTargets_[2] = Color.blue;
-                    //SetCrownTargets(position3D_, colTargets_, _targetPropLvl1);
-
-                    //_score += 1 * _comboMultiply;
-                    //_comboMultiply *= 2;
-                }
-                else
+                if (targetsList.Count > 0)
                 {
                     _reachTargetsColor.Add(targetColor_);   // update reached target colors
                     _reachTargetsPosition.Add(position3D_); // update reached target positions
@@ -304,6 +293,10 @@ private void Update()
                     _reachTargetsPosition.Clear();
 
                     //serialController.EndGame();
+
+                    this.gameObject.GetComponentInParent<GameManager>().SetScore();
+
+                    Destroy(this.gameObject); // good bye
                 }
             }
         }

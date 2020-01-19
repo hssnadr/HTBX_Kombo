@@ -16,6 +16,10 @@ namespace Hitbox.Kombo
 
         }
 
+        public void SetScore() {
+            // Launch score animation
+        }
+
         public void GetInteractPoint(Vector2 pos2D_)
         {
             Debug.Log("Interact point at" + pos2D_);
@@ -32,8 +36,7 @@ namespace Hitbox.Kombo
             else {
                 // Kombo game is running
                 targetsManager.GetImpact(pos2D_);
-            }
-            
+            }            
         }
     }
 }
