@@ -8,6 +8,8 @@ namespace Hitbox.Kombo
     {
         [SerializeField]
         private GameObject _komboPrefab;
+        private GameObject _scoreGaugePrefab;
+
         private TargetsManager targetsManager;
 
         // Start is called before the first frame update
@@ -18,6 +20,8 @@ namespace Hitbox.Kombo
 
         public void SetScore() {
             // Launch score animation
+            GameObject go = Instantiate(_scoreGaugePrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+            go.SendMessage("SetScore", 28);
         }
 
         public void GetInteractPoint(Vector2 pos2D_)
