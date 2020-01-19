@@ -348,8 +348,8 @@ GameObject:
   m_Component:
   - component: {fileID: 833152887}
   - component: {fileID: 833152886}
-  - component: {fileID: 833152890}
   - component: {fileID: 833152888}
+  - component: {fileID: 833152890}
   m_Layer: 0
   m_Name: RenderCamera_Player1
   m_TagString: Untagged
@@ -423,27 +423,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 833152885}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3148971e48ae59343a4458371d322781, type: 3}
+  m_Script: {fileID: 11500000, guid: b00689869b39e4c49a16619963d02aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPrefab: {fileID: 8095705370321486800, guid: 193d6e472569a474c87cf1f30aa5df4f,
+  _komboPrefab: {fileID: 9001676904683018355, guid: 66d4b3c072c845745b4ca3abe2633863,
     type: 3}
-  _targetPropLvl1:
-    _rotSpeed: 85
-    _transSpeed: 85
-    _lifeTime: 4
-    _scale: 45
-  _targetPropLvl2:
-    _rotSpeed: 200
-    _transSpeed: 100
-    _lifeTime: 3
-    _scale: 25
-  _targetPropLvl3:
-    _rotSpeed: 0
-    _transSpeed: 0
-    _lifeTime: 1
-    _scale: 19
-  scoreText: {fileID: 2106998358}
 --- !u!114 &833152890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,7 +440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bab139323e558342bc6006986a704ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serialController: {fileID: 1644190784}
   _debugCamera: {fileID: 597049765}
   _impactPrefabs: {fileID: 7726583474970102550, guid: 8315c5c3b12da6142ac39f6d0b62bab4,
     type: 3}

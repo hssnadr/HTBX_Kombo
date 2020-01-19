@@ -89,18 +89,27 @@ namespace Hitbox.Kombo
 
         private int _score = 0 ;
         private int _comboMultiply = 1 ;
-        public Text scoreText ;
-
-        private bool isWaiting = false;
 
         private void Awake()
         {
-            _hitboxCamera = this.gameObject.GetComponent<Camera>();
+            _hitboxCamera = this.gameObject.GetComponentInParent<Camera>();
             targetsList = new List<GameObject>();
             _reachTargetsColor = new List<Color>();
             _reachTargetsPosition = new List<Vector3>();
+        }
 
-            scoreText.text = "";
+        private void Start()
+        {
+            Debug.Log("c'est le target manager");
+
+            Color[] colTargets_ = new Color[3];
+            colTargets_[0] = Color.red;
+            colTargets_[1] = Color.green;
+            colTargets_[2] = Color.blue;
+            SetCrownTargets(this.transform.position, colTargets_, _targetPropLvl1);
+
+            _score += 1 * _comboMultiply;
+            _comboMultiply *= 2;
         }
 
         public void GetImpact(Vector2 position2D_)
@@ -135,14 +144,14 @@ namespace Hitbox.Kombo
 
                 if (targetsList.Count == 0)
                 {
-                    colTargets_ = new Color[3];
-                    colTargets_[0] = Color.red;
-                    colTargets_[1] = Color.green;
-                    colTargets_[2] = Color.blue;
-                    SetCrownTargets(position3D_, colTargets_, _targetPropLvl1);
+                    //colTargets_ = new Color[3];
+                    //colTargets_[0] = Color.red;
+                    //colTargets_[1] = Color.green;
+                    //colTargets_[2] = Color.blue;
+                    //SetCrownTargets(position3D_, colTargets_, _targetPropLvl1);
 
-                    _score += 1 * _comboMultiply;
-                    _comboMultiply *= 2;
+                    //_score += 1 * _comboMultiply;
+                    //_comboMultiply *= 2;
                 }
                 else
                 {
@@ -279,26 +288,14 @@ namespace Hitbox.Kombo
         }
 
 
-
-        private IEnumerator WaitForEnd()
-        {
-            isWaiting = true;
-            yield return new WaitForSeconds(5.0f);
-            scoreText.text = "";
-            //serialController.ScreenSaver();
-            isWaiting = false;
-        }
-
-
-        private void Update()
+private void Update()
         {
             for (int i = 0; i < targetsList.Count; i++) {
                 if (targetsList[i] == null)
                     targetsList.RemoveAt(i);
 
-                if (targetsList.Count == 0 && !isWaiting)
+                if (targetsList.Count == 0)
                 {
-                    scoreText.text = _score.ToString();
                     Debug.Log("Score = " + _score);
                     _score = 0;
                     _comboMultiply = 1;
@@ -307,11 +304,6 @@ namespace Hitbox.Kombo
                     _reachTargetsPosition.Clear();
 
                     //serialController.EndGame();
-
-                    StartCoroutine(WaitForEnd());
-                }
-                else {
-                    scoreText.text = ""; 
                 }
             }
         }

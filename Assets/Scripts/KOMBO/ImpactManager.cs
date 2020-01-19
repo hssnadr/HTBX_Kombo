@@ -8,7 +8,6 @@ namespace Hitbox.Kombo
 {
     public class ImpactManager : MonoBehaviour
     {
-        public ExampleSerialController serialController;
         private Camera _hitboxCamera;
         [SerializeField]
         private Camera _debugCamera;
@@ -50,7 +49,7 @@ namespace Hitbox.Kombo
             Vector3 pos3DSprite_ = new Vector3(position2D_.x, position2D_.y, this.gameObject.transform.position.z + 100f); // set sprite in front of Hitbox camera
             Instantiate(_impactPrefabs, pos3DSprite_, Quaternion.identity, this.gameObject.transform);
 
-            this.gameObject.GetComponent<TargetsManager>().GetImpact(position2D_);
+            this.gameObject.GetComponent<GameManager>().GetInteractPoint(position2D_);
         }
 
 #if UNITY_EDITOR
