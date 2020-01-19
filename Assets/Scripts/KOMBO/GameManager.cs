@@ -8,6 +8,7 @@ namespace Hitbox.Kombo
     {
         [SerializeField]
         private GameObject _komboPrefab;
+        [SerializeField]
         private GameObject _scoreGaugePrefab;
 
         private TargetsManager targetsManager;
@@ -20,7 +21,10 @@ namespace Hitbox.Kombo
 
         public void SetScore() {
             // Launch score animation
-            GameObject go = Instantiate(_scoreGaugePrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+            Vector3 gaugePosition_ = this.gameObject.transform.position;
+            gaugePosition_.z += 100;
+
+            GameObject go = Instantiate(_scoreGaugePrefab, gaugePosition_, Quaternion.identity, this.gameObject.transform) as GameObject;
             go.SendMessage("SetScore", 28);
         }
 
