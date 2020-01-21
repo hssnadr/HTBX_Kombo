@@ -430,6 +430,7 @@ MonoBehaviour:
     type: 3}
   _scoreGaugePrefab: {fileID: 4782973752803891191, guid: 85dc02e5817874d42af4669419da9691,
     type: 3}
+  _scoreReference: 66.6
 --- !u!114 &833152890
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,14 +30,16 @@ namespace Hitbox.Kombo
         {
             // Launch score gauge player animation
             GameObject gaugPlayer_ = Instantiate(_scoreGaugePrefab, this.gameObject.transform) as GameObject;
+            gaugPlayer_.SendMessage("SetGaugeColor", Color.green);
             gaugPlayer_.SendMessage("SetPlayerScore", newScore_);
-
+            
             //yield on a new YieldInstruction that waits for 5 seconds.
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0.75f);
 
             // Launche score gauge reference animation
             GameObject gaugReference_ = Instantiate(_scoreGaugePrefab, this.gameObject.transform) as GameObject;
-            gaugReference_.SendMessage("SetPlayerScore", _scoreReference);
+            gaugReference_.SendMessage("SetGaugeColor", Color.blue);
+            gaugReference_.SendMessage("SetPlayerScore", _scoreReference);            
         }
 
         public void GetInteractPoint(Vector2 pos2D_)
