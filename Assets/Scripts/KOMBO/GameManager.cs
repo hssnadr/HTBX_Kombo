@@ -11,6 +11,9 @@ namespace Hitbox.Kombo
         [SerializeField]
         private GameObject _scoreGaugePrefab;
 
+        [SerializeField]
+        private float _scoreReference = 66.6f;
+
         private TargetsManager targetsManager;
 
         // Start is called before the first frame update
@@ -19,13 +22,22 @@ namespace Hitbox.Kombo
 
         }
 
-        public void SetScore() {
-            // Launch score animation
-            Vector3 gaugePosition_ = this.gameObject.transform.position;
-            gaugePosition_.z += 100;
+        public void SetScore(float score_) {
+            StartCoroutine(DisplayScores(score_));
+        }
 
-            GameObject go = Instantiate(_scoreGaugePrefab, gaugePosition_, Quaternion.identity, this.gameObject.transform) as GameObject;
-            go.SendMessage("SetScore", 28);
+        IEnumerator DisplayScores(float newScore_)
+        {
+            // Launch score gauge player animation
+            GameObject gaugPlayer_ = Instantiate(_scoreGaugePrefab, this.gameObject.transform) as GameObject;
+            gaugPlayer_.SendMessage("SetPlayerScore", newScore_);
+
+            //yield on a new YieldInstruction that waits for 5 seconds.
+            yield return new WaitForSeconds(1.5f);
+
+            // Launche score gauge reference animation
+            GameObject gaugReference_ = Instantiate(_scoreGaugePrefab, this.gameObject.transform) as GameObject;
+            gaugReference_.SendMessage("SetPlayerScore", _scoreReference);
         }
 
         public void GetInteractPoint(Vector2 pos2D_)

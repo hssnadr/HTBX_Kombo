@@ -87,7 +87,9 @@ namespace Hitbox.Kombo
 
         private Camera _hitboxCamera;
 
-        private int _score = 0 ;
+        [SerializeField]
+        private float _scr = 0f ;
+        private float _score = 0f;
         private int _comboMultiply = 1 ;
 
         private void Awake()
@@ -294,7 +296,7 @@ private void Update()
 
                     //serialController.EndGame();
 
-                    this.gameObject.GetComponentInParent<GameManager>().SetScore();
+                    this.gameObject.GetComponentInParent<GameManager>().SetScore(_scr);
 
                     Destroy(this.gameObject); // good bye
                 }
