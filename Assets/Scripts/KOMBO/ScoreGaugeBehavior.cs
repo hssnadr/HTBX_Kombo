@@ -93,11 +93,16 @@ namespace Hitbox.Kombo
 
                 SetGaugeColor(Color.Lerp(color0_, _colorVictory, _curve.Evaluate(1.5f * deltaTime_)));
 
-                // Anim alpha
+                /// Rotation
+                //Quaternion newRot_ = transform.localRotation;
+                //newRot_.z = _curve.Evaluate(deltaTime_) * 180f;
+                //transform.localRotation = newRot_;
+
+                /// Anim alpha
                 float progAlpha_ = 1f - _curve.Evaluate(deltaTime_);
                 SetAlpha(progAlpha_);
 
-                // Anim scale
+                /// Anim scale
                 Vector3 newScale_ = scale0_;
                 newScale_.y += _curve.Evaluate(deltaTime_) * dScaleY_;
                 transform.localScale = newScale_;
@@ -113,7 +118,7 @@ namespace Hitbox.Kombo
             float animSpeed_ = 0.8f;
             Color color0_ = _gaugRenderer.material.color;
             Vector3 scale0_ = transform.localScale; // inital scale
-            float dScaleY_ = 4f * scale0_.y;
+            float dScaleY_ = 8f * scale0_.y;
             Vector3 pos0_ = transform.localPosition;
             float dPosY_ = _hitboxCamera.rect.height * _hitboxCamera.orthographicSize + pos0_.y;
             Debug.Log("new scale Y = " + dScaleY_);
@@ -124,19 +129,19 @@ namespace Hitbox.Kombo
 
                 SetGaugeColor(Color.Lerp(color0_, _colorDefeat, _curve.Evaluate(1.5f * deltaTime_)));
 
-                // Anim alpha
+                /// Anim alpha
                 if (deltaTime_ > 0.35)
                 {
                     float progAlpha_ = 1f - _curve.Evaluate(deltaTime_);
                     SetAlpha(progAlpha_);
                 }
 
-                // Anim scale
+                /// Anim scale
                 Vector3 newScale_ = scale0_;
                 newScale_.y += _curve.Evaluate(deltaTime_) * dScaleY_;
                 transform.localScale = newScale_;
 
-                // Anim position
+                /// Anim position
                 Vector3 newPos_ = this.transform.localPosition;
                 newPos_.y = _curveDefeat.Evaluate(deltaTime_) * dPosY_ - _hitboxCamera.rect.height * _hitboxCamera.orthographicSize;
                 transform.localPosition = newPos_;
@@ -158,11 +163,11 @@ namespace Hitbox.Kombo
             {
                 deltaTime_ = animSpeed_ * (Time.time - timerStart_);
 
-                // Anim alpha
+                /// Anim alpha
                 float progAlpha_ = 1f - _curve.Evaluate(deltaTime_);
                 SetAlpha(progAlpha_);
 
-                // Anim scale
+                /// Anim scale
                 Vector3 newScale_ = scale0_;
                 newScale_.y += _curve.Evaluate(deltaTime_) * dScaleY_;
                 transform.localScale = newScale_;

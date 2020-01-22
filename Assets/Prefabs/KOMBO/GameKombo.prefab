@@ -60,4 +60,4 @@ MonoBehaviour:
     _transSpeed: 200
     _lifeTime: 1
     _scale: 30
-  _scr: 100
+  _scr: 30

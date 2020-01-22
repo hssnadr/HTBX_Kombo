@@ -407,7 +407,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 833152885}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -430,7 +430,7 @@ MonoBehaviour:
     type: 3}
   _scoreGaugePrefab: {fileID: 4782973752803891191, guid: 85dc02e5817874d42af4669419da9691,
     type: 3}
-  _scoreReference: 60
+  _scoreReference: 25
   _playerColor: {r: 0.3843137, g: 0.5848337, b: 0.8980392, a: 1}
   _referenceColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &833152890
