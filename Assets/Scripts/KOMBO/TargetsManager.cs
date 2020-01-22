@@ -102,8 +102,6 @@ namespace Hitbox.Kombo
 
         private void Start()
         {
-            Debug.Log("c'est le target manager");
-
             Color[] colTargets_ = new Color[3];
             colTargets_[0] = Color.red;
             colTargets_[1] = Color.green;

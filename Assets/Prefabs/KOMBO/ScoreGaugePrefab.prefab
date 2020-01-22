@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 4782973752803891195}
   - component: {fileID: 4782973752803891192}
   - component: {fileID: 4782973752803891193}
-  - component: {fileID: 4782973752803891190}
-  - component: {fileID: 4782973752803891194}
   - component: {fileID: 4782973752803891197}
   m_Layer: 0
   m_Name: ScoreGaugePrefab
@@ -30,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4782973752803891191}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 100}
-  m_LocalScale: {x: 965.7, y: 22.7, z: 40}
+  m_LocalScale: {x: 965.7, y: 8, z: 40}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -81,38 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &4782973752803891190
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4782973752803891191}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &4782973752803891194
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4782973752803891191}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7cd6d460adfd4c24ea70621db0fb93d0, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &4782973752803891197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,28 +91,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6474016b34cab74db6054d34c0b7e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curve:
+  _curve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _curveDefeat:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
+      value: 1
+      inSlope: -0.007400362
+      outSlope: -0.007400362
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.26365712
+    - serializedVersion: 3
+      time: 0.35
+      value: 0.009070605
+      inSlope: -4.5930433
+      outSlope: 3.4049454
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.08544733
+      outWeight: 0.0641026
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      value: 0
+      inSlope: -5.0943446
+      outSlope: -5.0943446
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.032051254
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _pFinalScore: 100
+  _maxScore: 100
+  _coefSpeedGaug: 0.5
+  _colorVictory: {r: 0.16509432, g: 1, b: 0.17452823, a: 1}
+  _colorDefeat: {r: 1, g: 0.11792451, b: 0.11792451, a: 0}
