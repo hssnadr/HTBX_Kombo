@@ -20,12 +20,16 @@ namespace Hitbox.Kombo
 
         private TargetsManager targetsManager;
 
+        private bool _isPlaying = true;
+
         public void SetScore(float newScore_) {
             StartCoroutine(DisplayScores(newScore_));
         }
 
         IEnumerator DisplayScores(float scorePlayer_)
         {
+            _isPlaying = false;
+
             // Launch score gauge player animation
             GameObject gaugPlayer_ = Instantiate(_scoreGaugePrefab, this.gameObject.transform) as GameObject;
             gaugPlayer_.SendMessage("SetGaugeColor", _playerColor);
@@ -33,7 +37,6 @@ namespace Hitbox.Kombo
             var ply_ = gaugPlayer_.GetComponent<ScoreGaugeBehavior>();
             StartCoroutine(ply_.EntranceAnimation());
 
-            // Delay reference display
             yield return new WaitForSeconds(0.75f);
 
             // Launche score gauge reference animation
@@ -44,7 +47,6 @@ namespace Hitbox.Kombo
             yield return StartCoroutine(ref_.EntranceAnimation());
 
             //// Animation Victory / Defeat
-            print("FINAL ANIM");
             if (scorePlayer_ > _scoreReference)
             {
                 StartCoroutine(ref_.FadeOutAnimation(-0.8f));
@@ -56,29 +58,34 @@ namespace Hitbox.Kombo
             }
 
             // Destroy gauges and update score
-            print("DONE");
-            //GameObject.Destroy(gaugPlayer_);
-            //GameObject.Destroy(gaugReference_);
+            GameObject.Destroy(gaugPlayer_);
+            GameObject.Destroy(gaugReference_);
             _scoreReference = scorePlayer_;
+
+            _isPlaying = true;
         }
 
         public void GetInteractPoint(Vector2 pos2D_)
         {
             Debug.Log("Interact point at" + pos2D_);
 
-            if (targetsManager == null)
+            if (_isPlaying)
             {
-                // Start KOMBO game
-                Vector3 gamePosition_ = new Vector3(pos2D_.x, pos2D_.y, 10);
-                gamePosition_.z += this.gameObject.transform.position.z;
+                if (targetsManager == null)
+                {
+                    // Start KOMBO game
+                    Vector3 gamePosition_ = new Vector3(pos2D_.x, pos2D_.y, 10);
+                    gamePosition_.z += this.gameObject.transform.position.z;
 
-                var _game = Instantiate(_komboPrefab, gamePosition_, Quaternion.identity, this.gameObject.transform);
-                targetsManager = _game.GetComponent<TargetsManager>();
-            }
-            else {
-                // Kombo game is running
-                targetsManager.GetImpact(pos2D_);
-            }            
+                    var _game = Instantiate(_komboPrefab, gamePosition_, Quaternion.identity, this.gameObject.transform);
+                    targetsManager = _game.GetComponent<TargetsManager>();
+                }
+                else
+                {
+                    // Kombo game is running
+                    targetsManager.GetImpact(pos2D_);
+                }
+            }           
         }
     }
 }
