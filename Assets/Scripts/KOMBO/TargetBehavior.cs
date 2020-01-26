@@ -6,14 +6,106 @@ namespace Hitbox.Kombo
 {
     public class TargetBehavior : MonoBehaviour
     {
-        private Vector3 _targetDirection = Vector3.right;   // target direction in world space
-        private float _angle = 0.0f;                        // default angle direction
-        private float _speedTranslate = 50.0f;              // default translation speed value
-        private float _speedRotate = 0.0f;                  // default rotation speed value
-        private Vector3 _rotationAxe = Vector3.forward;
+        private float _time0;                            // time born from game start
         private Renderer render;
+
+        /// TARGET LEVEL
+        private int _targetLevel = 0;                       // target family level (level 1, 2, 3...)
+        public int TargetLevel
+        {
+            get => _targetLevel;
+            set
+            {
+                _targetLevel = value;
+            }
+        }
+
+        /// TARGET TYPE
+        private int _targetType = 0;                        // target type from family level properties
+        public int TargetType
+        {
+            get => _targetType;
+            set
+            {
+                _targetType = value;
+            }
+        }
+
+        /// TARGET DIRECTION
+        private Vector3 _targetDirection = Vector3.right;   // target direction in world space
+        public Vector3 TargetDirection
+        {
+            get => _targetDirection;
+            set
+            {
+                _targetDirection = value;
+            }
+        }
+
+        /// ROTATION AXIS
+        private Vector3 _rotationAxis = Vector3.forward;
+        public Vector3 RotationAxis
+        {
+            get => _rotationAxis;
+            set
+            {
+                _rotationAxis = value;
+            }
+        }
+
+        /// TARGET ANGLE
+        private float _angle = 0.0f;                        // default angle direction
+        public float Angle
+        {
+            get => _angle;
+            set
+            {
+                _angle = value * Mathf.Deg2Rad;             // convert function input in degree to local variable in radian
+                TargetDirection = new Vector3(Mathf.Cos(_angle), Mathf.Sin(_angle), 0);
+            }
+        }
+
+        /// TRANSLATION SPEED
+        private float _translationSpeed = 50.0f;              // default translation speed value
+        public float TranslationSpeed
+        {
+            get => _translationSpeed;
+            set
+            {
+                _translationSpeed = value;
+            }
+        }
+
+        /// ROTATION SPEED
+        private float rotationSpeed = 0.0f;                  // default rotation speed value
+        public float RotationSpeed
+        {
+            get => _translationSpeed;
+            set
+            {
+                _translationSpeed = value;
+            }
+        }
+
+        // LIFE TIME
         private float _lifeTime = 5.0f;                     // default lifetime in second
-        private float _timeBorn;                            // time born from game start
+        public float LifeTime
+        {
+            get => _lifeTime;
+            set
+            {
+                _lifeTime = value;
+            }
+        }
+
+        // TARGET COLOR
+        public Color TargetColor
+        {
+            set
+            {
+                render.material.SetColor("_Color", value);
+            }
+        }
 
         /// <summary>
         /// Prefab of the feedback object.
@@ -25,59 +117,25 @@ namespace Hitbox.Kombo
         void Awake()
         {
             render = GetComponent<Renderer>();
-            _timeBorn = Time.time;
+            _time0 = Time.time;
         }
 
-        public void SetLifeTime(float lifeTime_)
-        {
-            _lifeTime = lifeTime_;
-        }
+        
 
-        public void SetAngleDirection(float angleDeg_)
-        {
-            _angle = angleDeg_ * Mathf.Deg2Rad;             // convert function input in degree to local variable in radian
-            _targetDirection = new Vector3(Mathf.Cos(_angle), Mathf.Sin(_angle), 0);
-        }
-
-        public void SetTranslationSpeed(float speedTranslate_)
-        {
-            _speedTranslate = speedTranslate_;
-        }
-
-        public void SetRotationSpeed(float speedRotate_)
-        {
-            _speedRotate = speedRotate_;
-        }
-
-        public void SetRotationAxis(Vector3 axRotate_)
-        {
-            _rotationAxe = axRotate_;
-        }
-
-        public void SetColor(Color col_)
-        {
-            render.material.SetColor("_Color", col_);
-        }
-
-        public Color GetColor()
-        {
-            return render.material.GetColor("_Color");
-        }
-
-        public void setScale(float scale_)
+        public void SetScale(float scale_)
         {
             this.gameObject.transform.localScale = new Vector3(scale_, scale_, scale_);
         }
 
         void Update()
         {
-            if (_speedRotate != 0.0f)
+            if (rotationSpeed != 0.0f)
             {
-                this.gameObject.transform.RotateAround(_rotationAxe, Vector3.forward, _speedRotate * Time.deltaTime);
+                this.gameObject.transform.RotateAround(_rotationAxis, Vector3.forward, rotationSpeed * Time.deltaTime);
             }
-            this.gameObject.transform.Translate(_speedTranslate * _targetDirection * Time.deltaTime, Space.World);
+            this.gameObject.transform.Translate(_translationSpeed * _targetDirection * Time.deltaTime, Space.World);
 
-            if (Time.time - _timeBorn > _lifeTime)
+            if (Time.time - _time0 > _lifeTime)
             {
                 destroyTarget();
             }

@@ -21,6 +21,18 @@ namespace Hitbox.Kombo
         [SerializeField]
         private float _scale;
 
+        public Color[] _colors
+        {
+            set
+            {
+                _colors = value;
+            }
+            get
+            {
+                return _colors;
+            }
+        }
+
         public float rotSpeed
         {
             set {
@@ -67,28 +79,37 @@ namespace Hitbox.Kombo
             }
         }
 
-        public TargetProperties(float lifeTime_, float scale_, float transSpeed_, float rotSpeed_)
+        public TargetProperties(Color[] colors_, float lifeTime_, float scale_, float transSpeed_, float rotSpeed_)
         { _lifeTime = lifeTime_; _scale = scale_; _transSpeed = transSpeed_; _rotSpeed = rotSpeed_; }
     }
 
     public class TargetsManager : MonoBehaviour
     {
-        public GameObject targetPrefab ;
-        List<GameObject> targetsList;			// list of current targets
-        List<Color> _reachTargetsColor;			// colors of reached targets
-        List<Vector3> _reachTargetsPosition;	// position of reached targets
+        public GameObject targetPrefab;
+        private List<GameObject> targetsList;			// list of current targets
+        private List<Color> _reachTargetsColor;			// colors of reached targets
+        private List<Vector3> _reachTargetsPosition;	// position of reached targets
 
+        /// <summary>
+        /// Here are specified the caracteristics for each target level
+        /// </summary>
         [SerializeField]
-        private TargetProperties _targetPropLvl1 = new TargetProperties(3.0f, 40.0f, 85.0f, 0.0f);      // RGB
+        private Color _colorLvl1 = Color.white;
         [SerializeField]
-        private TargetProperties _targetPropLvl2 = new TargetProperties(2.0f, 30.0f, 120.0f, 300.0f);   // CMJ
+        private TargetProperties _targetPropLvl1;    /// LEVEL 1
         [SerializeField]
-        private TargetProperties _targetPropLvl3 = new TargetProperties(1.0f, 30.0f, 200.0f, -300.0f);  // White
+        private Color[] _colorsLevel2 = new Color[3] {Color.red, Color.green, Color.blue};
+        [SerializeField]
+        private TargetProperties _targetPropLvl2;   /// LEVEL 2
+        [SerializeField]
+        private Color _colorLvl3 = Color.white;
+        [SerializeField]
+        private TargetProperties _targetPropLvl3;   ///  LEVEL 3
 
         private Camera _hitboxCamera;
 
         [SerializeField]
-        private float _scr = 0f ;
+        private float _scr = 0f ; /// ! --> REMOVE THIS <-- ! ///
         private float _score = 0f;
         private int _comboMultiply = 1 ;
 
@@ -98,15 +119,16 @@ namespace Hitbox.Kombo
             targetsList = new List<GameObject>();
             _reachTargetsColor = new List<Color>();
             _reachTargetsPosition = new List<Vector3>();
+
+            /// Initialize target propertie levels
+            _targetPropLvl1 = new TargetProperties(new Color[]{_colorLvl1}, 3.0f, 40.0f, 85.0f, 0.0f);      /// LEVEL 1
+            _targetPropLvl2 = new TargetProperties(_colorsLevel2, 2.0f, 30.0f, 120.0f, 300.0f);             /// LEVEL 2
+            _targetPropLvl3 = new TargetProperties(new Color[]{_colorLvl3}, 1.0f, 30.0f, 200.0f, -300.0f);  /// LEVEL 3
         }
 
         private void Start()
         {
-            Color[] colTargets_ = new Color[3];
-            colTargets_[0] = Color.red;
-            colTargets_[1] = Color.green;
-            colTargets_[2] = Color.blue;
-            SetCrownTargets(this.transform.position, colTargets_, _targetPropLvl1);
+            SetTargetsLvl1(this.transform.position);
 
             _score += 1 * _comboMultiply;
             _comboMultiply *= 2;
@@ -128,151 +150,81 @@ namespace Hitbox.Kombo
 				{
 					if (hit.collider != null && hit.transform.tag == "target")
 					{
-						targetColor_ = hit.collider.GetComponent<TargetBehavior>().GetColor();
-						hit.collider.GetComponent<TargetBehavior>().SetHit();
-						SetTargetsFromTarget(position3D_, targetColor_); // Action : set new targets from the one reached
-					}
+                        int targetLvl_ = hit.collider.GetComponent<TargetBehavior>().TargetLevel;
+                        switch (targetLvl_) {
+                            case 1:
+                                HitTargetLvl1(hit.collider.gameObject);
+                                break;
+                            case 2:
+                                HitTargetLvl2(hit.collider.gameObject);
+                                break;
+                            case 3:
+                                HitTargetLvl3(hit.collider.gameObject);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        hit.collider.GetComponent<TargetBehavior>().SetHit(); // Inform the target she's been touched
+                    }
 				}
 			}
 		}
 
-		void SetTargetsFromTarget(Vector3 posTargt_, Color colTargt_)
-		{
-            Color[] colTargets_;
-
-            if (targetsList.Count > 0)
-            {
-                _reachTargetsColor.Add(colTargt_);		// update reached target colors
-                _reachTargetsPosition.Add(posTargt_);	// update reached target positions
-
-                if (colTargt_ == Color.red)
-                {
-                    colTargets_ = new Color[2];
-                    colTargets_[0] = Color.magenta;
-                    colTargets_[1] = Color.yellow;
-                    SetCrownTargets(posTargt_, colTargets_, _targetPropLvl2);
-
-                    _score += 2 * _comboMultiply;
-                    _comboMultiply *= 4;
-                }
-
-                if (colTargt_ == Color.green)
-                {
-                    colTargets_ = new Color[2];
-                    colTargets_[0] = Color.yellow;
-                    colTargets_[1] = Color.cyan;
-                    SetCrownTargets(posTargt_, colTargets_, _targetPropLvl2);
-
-                    _score += 2 * _comboMultiply;
-                    _comboMultiply *= 4;
-                }
-
-                if (colTargt_ == Color.blue)
-                {
-                    colTargets_ = new Color[2];
-                    colTargets_[0] = Color.cyan;
-                    colTargets_[1] = Color.magenta;
-                    SetCrownTargets(posTargt_, colTargets_, _targetPropLvl2);
-
-                    _score += 2 * _comboMultiply;
-                    _comboMultiply *= 4;
-                }
-
-                if (colTargt_ == Color.white)
-                {
-                    _score += 4 * _comboMultiply;
-                    _comboMultiply *= 8;
-                }
-
-                if (colTargt_ == Color.yellow || colTargt_ == Color.cyan || colTargt_ == Color.magenta)
-                {
-                    int[] indexCMJ_ = new int[3];
-                    bool isYellow_ = false;
-                    bool isCyan_ = false;
-                    bool isMagenta_ = false;
-                    for (int i = 0; i < _reachTargetsColor.Count; i++) {
-                        if (_reachTargetsColor[i] == Color.yellow && !isYellow_) {
-                            indexCMJ_[0] = i;                                       // get yellow index
-                            isYellow_ = true;
-                        }
-
-                        if (_reachTargetsColor[i] == Color.cyan && !isCyan_){
-                            indexCMJ_[1] = i;                                       // get cyan index
-                            isCyan_ = true;
-                        }
-
-                        if (_reachTargetsColor[i] == Color.magenta && !isMagenta_) {
-                            indexCMJ_[2] = i;                                       // get magenta index
-                            isMagenta_ = true;
-                        }                                
-
-                        if (isYellow_ && isCyan_ && isMagenta_) {
-                            float xG_ = 0.0f;
-                            for (int j = 0; j < 3; j++)
-                            {
-                                xG_ += _reachTargetsPosition[indexCMJ_[j]].x;
-                            }
-                            xG_ /= 3.0f; // get X pos of white target
-
-                            float yG_ = 0.0f;
-                            for (int j = 0; j < 3; j++)
-                            {
-                                yG_ += _reachTargetsPosition[indexCMJ_[j]].y;
-                            }
-                            yG_ /= 3.0f;  // get Y pos of white target
-
-                            float zG_ = 0.0f;
-                            for (int j = 0; j < 3; j++)
-                            {
-                                zG_ += _reachTargetsPosition[indexCMJ_[j]].z;
-                            }
-                            zG_ /= 3.0f;  // get Z pos of white target
-
-                            // Set white target
-                            Vector3 posWhite_ = new Vector3(xG_, yG_, zG_);
-                            SetTarget(posWhite_, Color.white, 0.0f, _targetPropLvl3);
-
-                            // Destroyed reached targets
-                            System.Array.Sort(indexCMJ_);
-                            for (int j = 2; j >= 0; j--) {
-                                _reachTargetsColor.RemoveAt(indexCMJ_[j]);
-                                _reachTargetsPosition.RemoveAt(indexCMJ_[j]);                                    
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            }
+        /// <summary>
+        /// TARGET HIT ACTION
+        /// </summary>
+        private void HitTargetLvl1(GameObject target_) { 
         }
-
-        private void SetTarget(Vector3 position_, Color colTarget_, float angleDirection_, TargetProperties targetProp_)
-        {   
-            // Instantiate target
-            targetsList.Add((GameObject)Instantiate(targetPrefab, position_, Quaternion.identity));
-
-            // Set target properties
-            GameObject target_ = targetsList[targetsList.Count - 1];                            // get last target which correspond to the current one
-            target_.GetComponent<TargetBehavior>().SetLifeTime(targetProp_.lifeTime);
-            target_.GetComponent<TargetBehavior>().SetAngleDirection(angleDirection_);
-            target_.GetComponent<TargetBehavior>().SetColor(colTarget_);
-            target_.GetComponent<TargetBehavior>().SetTranslationSpeed(targetProp_.transSpeed);
-            target_.GetComponent<TargetBehavior>().SetRotationAxis(position_);
-            target_.GetComponent<TargetBehavior>().SetRotationSpeed(targetProp_.rotSpeed);
-            target_.GetComponent<TargetBehavior>().setScale(targetProp_.scale);
-        }
-
-        private void SetCrownTargets(Vector3 position_, Color[] colTargets_, TargetProperties targetProp_)
+        private void HitTargetLvl2(GameObject target_)
         {
+        }
+        private void HitTargetLvl3(GameObject target_)
+        {
+        }
+
+        /// <summary>
+        /// TARGET LEVEL GENERATOR
+        /// </summary>
+        private void SetTargetsLvl1(Vector3 pos_) {
+            SetCrownTargets(pos_, _targetPropLvl1); // LEVEL 1
+        }        
+        private void SetTargetLvl2(Vector3 pos_)
+        {
+            SetCrownTargets(pos_, _targetPropLvl2); // LEVEL 2
+        }        
+        private void SetTargetsLvl3(Vector3 pos_)
+        {
+            SetCrownTargets(pos_, _targetPropLvl3); // LEVEL 3
+        }
+
+        private void SetCrownTargets(Vector3 position_, TargetProperties targetProp_)
+        {
+            Color[] colTargets_ = targetProp_._colors;
             int angle0_ = Random.Range(0, 360);
             int nTargets_ = colTargets_.Length;
 
+            /// Generate a beautiful crown of colorized targets all over the impact  ( *-*( m )
             for (int i = 0; i < nTargets_; i++)
             {
                 SetTarget(position_, colTargets_[i], angle0_ + i * (float)360 / nTargets_, targetProp_);
             }
         }
 
+        private void SetTarget(Vector3 position_, Color colTarget_, float angleDirection_, TargetProperties targetProp_)
+        {
+            // Instantiate target
+            GameObject target_ = Instantiate(targetPrefab, position_, Quaternion.identity) as GameObject;
+
+            // Set target properties
+            target_.GetComponent<TargetBehavior>().LifeTime = targetProp_.lifeTime;
+            target_.GetComponent<TargetBehavior>().Angle = angleDirection_;
+            target_.GetComponent<TargetBehavior>().TargetColor = colTarget_;
+            target_.GetComponent<TargetBehavior>().TranslationSpeed = targetProp_.transSpeed;
+            target_.GetComponent<TargetBehavior>().RotationAxis = position_;
+            target_.GetComponent<TargetBehavior>().RotationSpeed = targetProp_.rotSpeed;
+            target_.GetComponent<TargetBehavior>().SetScale(targetProp_.scale);
+        }
 
 private void Update()
         {
