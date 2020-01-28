@@ -1,11 +1,7 @@
 ﻿//using System;
 using System.Collections;
 using System.Collections.Generic;
-using CRI.HitBoxTemplate.Serial;
-using CRI.HitBoxTemplate.Example;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Hitbox.Kombo
 {
@@ -104,8 +100,8 @@ namespace Hitbox.Kombo
         private Camera _hitboxCamera;
 
         [SerializeField]
-        private float _score = 0f;
-        private int _comboMultiply = 1 ;
+        private float _score;
+        private float _damageReduce;
 
         // On Hit level 1
         [SerializeField]
@@ -126,9 +122,9 @@ namespace Hitbox.Kombo
             _reachTargetsPosition = new List<Vector3>();
 
             /// Initialize target propertie levels
-            //_targetPropLvl1 = new TargetProperties(new Color[] { _colorLvl1 }, 3.0f, 40.0f, 85.0f, 0.0f);      /// LEVEL 1
-            //_targetPropLvl2 = new TargetProperties(_colorsLevel2, 2.0f, 30.0f, 120.0f, 300.0f);             /// LEVEL 2
-            //_targetPropLvl3 = new TargetProperties(new Color[] { _colorLvl3 }, 1.0f, 30.0f, 200.0f, -300.0f);  /// LEVEL 3
+            //_targetPropLvl1 = new TargetProperties(new Color[] { Color.white }, 3.0f, 40.0f, 85.0f, 0.0f);      /// LEVEL 1
+            //_targetPropLvl2 = new TargetProperties(new Color[] { Color.white }, 2.0f, 30.0f, 120.0f, 300.0f);   /// LEVEL 2
+            //_targetPropLvl3 = new TargetProperties(new Color[] { Color.white }, 1.0f, 30.0f, 200.0f, -300.0f);  /// LEVEL 3
 
             // Initialize Level 1            
 
@@ -149,9 +145,9 @@ namespace Hitbox.Kombo
         {
             SetTargetsLvl1(this.transform.position);
 
-            _score += 1 * _comboMultiply;
-            _comboMultiply *= 2;
-        }
+            _score = 0f;
+            _damageReduce = 1f;
+    }
 
         public void GetImpact(Vector2 position2D_)
         {
@@ -168,7 +164,9 @@ namespace Hitbox.Kombo
                 {
                     if (hit.collider != null && hit.transform.tag == "target")
                     {
-                        int targetLvl_ = hit.collider.GetComponent<TargetBehavior>().TargetLevel;
+                        _score += 1f * _damageReduce;
+
+                        int targetLvl_ = hit.collider.GetComponent<TargetBehavior>().GetTargetLevel();
                         switch (targetLvl_)
                         {
                             case 1:
@@ -243,13 +241,13 @@ namespace Hitbox.Kombo
             GameObject target_ = _targetsList[_targetsList.Count - 1];                            // get last target which correspond to the current one
 
             // Set target properties
-            target_.GetComponent<TargetBehavior>().TargetLevel = targetLvl_;
-            target_.GetComponent<TargetBehavior>().LifeTime = targetProp_.lifeTime;
-            target_.GetComponent<TargetBehavior>().Angle = angleDirection_;
-            target_.GetComponent<TargetBehavior>().TargetColor = colTarget_;
-            target_.GetComponent<TargetBehavior>().TranslationSpeed = targetProp_.transSpeed;
-            target_.GetComponent<TargetBehavior>().RotationAxis = position_;
-            target_.GetComponent<TargetBehavior>().RotationSpeed = targetProp_.rotSpeed;
+            target_.GetComponent<TargetBehavior>().SetTargetLevel(targetLvl_);
+            target_.GetComponent<TargetBehavior>().SetLifeTime(targetProp_.lifeTime);
+            target_.GetComponent<TargetBehavior>().SetAngleDirection(angleDirection_);
+            target_.GetComponent<TargetBehavior>().SetColor(colTarget_);
+            target_.GetComponent<TargetBehavior>().SetTranslationSpeed(targetProp_.transSpeed);
+            target_.GetComponent<TargetBehavior>().SetRotationAxis(position_);
+            target_.GetComponent<TargetBehavior>().SetRotationSpeed(targetProp_.rotSpeed);
             target_.GetComponent<TargetBehavior>().SetScale(targetProp_.scale);
         }
 
@@ -264,11 +262,9 @@ namespace Hitbox.Kombo
                 {
                     Debug.Log("Score = " + _score);
                     _score = 0;
-                    _comboMultiply = 1;
+                    _damageReduce = 1;
 
                     _reachTargetsPosition.Clear();
-
-                    //serialController.EndGame();
 
                     this.gameObject.GetComponentInParent<GameManager>().SetScore(_score);
 

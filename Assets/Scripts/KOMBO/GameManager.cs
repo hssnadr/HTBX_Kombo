@@ -1,11 +1,14 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using CRI.HitBoxTemplate.Example;
 using UnityEngine;
 
 namespace Hitbox.Kombo
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField]
+        private ExampleSerialController serialController ;
+
         [SerializeField]
         private GameObject _komboPrefab;
         [SerializeField]
@@ -23,6 +26,7 @@ namespace Hitbox.Kombo
         private bool _isPlaying = true;
 
         public void SetScore(float newScore_) {
+            SendEndGameAnimation();
             StartCoroutine(DisplayScores(newScore_));
         }
 
@@ -63,6 +67,10 @@ namespace Hitbox.Kombo
             _scoreReference = scorePlayer_;
 
             _isPlaying = true;
+        }
+
+        private void SendEndGameAnimation() {
+            serialController.EndGame();
         }
 
         public void GetInteractPoint(Vector2 pos2D_)
