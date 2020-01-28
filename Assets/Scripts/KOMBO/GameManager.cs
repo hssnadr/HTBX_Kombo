@@ -82,7 +82,7 @@ namespace Hitbox.Kombo
                 }
                 else
                 {
-                    // Kombo game is running
+                    // Kombo game is already running
                     targetsManager.GetImpact(pos2D_);
                 }
             }           

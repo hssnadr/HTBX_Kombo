@@ -46,18 +46,29 @@ MonoBehaviour:
   targetPrefab: {fileID: 8095705370321486800, guid: 193d6e472569a474c87cf1f30aa5df4f,
     type: 3}
   _targetPropLvl1:
-    _rotSpeed: 100
-    _transSpeed: 50
-    _lifeTime: 3
+    _colors:
+    - {r: 0.23766047, g: 0.15801886, b: 0.6320754, a: 1}
+    - {r: 0.23921569, g: 0.15686274, b: 0.6313726, a: 1}
+    - {r: 0.23921569, g: 0.16078432, b: 0.63529414, a: 1}
+    _rotSpeed: 200
+    _transSpeed: 2
+    _lifeTime: 5
     _scale: 50
   _targetPropLvl2:
+    _colors:
+    - {r: 1, g: 0, b: 0, a: 1}
+    - {r: 0.96692085, g: 1, b: 0, a: 1}
+    - {r: 0, g: 0.49014425, b: 1, a: 1}
     _rotSpeed: 300
-    _transSpeed: 100
-    _lifeTime: 5
+    _transSpeed: 3
+    _lifeTime: 50
     _scale: 30
   _targetPropLvl3:
+    _colors:
+    - {r: 1, g: 1, b: 1, a: 1}
     _rotSpeed: -300
-    _transSpeed: 200
+    _transSpeed: 0
     _lifeTime: 1
     _scale: 30
-  _scr: 30
+  _score: 0
+  _komboLinks: 2
