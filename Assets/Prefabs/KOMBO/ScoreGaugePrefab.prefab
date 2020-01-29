@@ -132,5 +132,5 @@ MonoBehaviour:
     m_RotationOrder: 4
   _maxScore: 100
   _coefSpeedGaug: 0.5
-  _colorVictory: {r: 0.16509432, g: 1, b: 0.17452823, a: 1}
-  _colorDefeat: {r: 1, g: 0.11792451, b: 0.11792451, a: 0}
+  _colorVictory: {r: 0.1071111, g: 0.7830189, b: 0.117509715, a: 1}
+  _colorDefeat: {r: 1, g: 0, b: 0, a: 1}

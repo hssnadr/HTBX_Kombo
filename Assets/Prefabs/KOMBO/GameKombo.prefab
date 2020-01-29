@@ -51,9 +51,9 @@ MonoBehaviour:
     - {r: 0.23921569, g: 0.15686274, b: 0.6313726, a: 1}
     - {r: 0.23921569, g: 0.16078432, b: 0.63529414, a: 1}
     _rotSpeed: 80
-    _transSpeed: 40
+    _transSpeed: 42
     _lifeTime: 3
-    _scale: 42
+    _scale: 38
   _targetPropLvl2:
     _colors:
     - {r: 1, g: 0, b: 0, a: 1}

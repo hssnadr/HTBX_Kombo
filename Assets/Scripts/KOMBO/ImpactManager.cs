@@ -12,6 +12,10 @@ namespace Hitbox.Kombo
         [SerializeField]
         private Camera _debugCamera;
 
+        float _timerOffHit0;
+        [SerializeField]
+        float _delayOffHit = 0.2f;
+
         [SerializeField]
         private GameObject _impactPrefabs;
 
@@ -33,11 +37,11 @@ namespace Hitbox.Kombo
         private void OnHit(object sender, ImpactPointControlEventArgs e)
         {
             // ----------- A CHECKER IF UTILE OU PAS -----------
-            //if (Time.time - timerOffHit0 > delayOffHit)
-            //{
-            //    SetImpact(e.impactPosition);
-            //    timerOffHit0 = Time.time;
-            //}
+            if (Time.time - _timerOffHit0 > _delayOffHit)
+            {
+                SetImpact(e.impactPosition);
+                _timerOffHit0 = Time.time;
+            }
             // -------------------------------------------------
 
             SetImpact(e.impactPosition);

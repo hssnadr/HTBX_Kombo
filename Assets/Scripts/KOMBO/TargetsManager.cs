@@ -116,12 +116,12 @@ namespace Hitbox.Kombo
         private float _damageReduce;
 
         // On Hit level 1
-        private int[,] _trgtsKomboLvl2 = new int[3,6];
+        private int[,] _trgtsKomboLvl2 = new int[4,6];
         [SerializeField]
         private int _komboLinks;     // Number of targets per kombo init
         private int _komboLvl;       // Current Kombo level
         private int _komboTrgt;      // Current Kombo hit apparition
-        private int _curKomboSerie;    // Current Kombo serie
+        private int _curKomboSerie;  // Current Kombo serie
 
         // On hit level 2
         private Vector3[,] _posHitTrgtsLvl2; // Hit positions of targets level 2 into a single kombo
@@ -150,7 +150,8 @@ namespace Hitbox.Kombo
             {
                 {0, 1, 0, 1, 2, 2},
                 {0, 1, 0, 2, 1, 2},
-                {1, 2, 0, 2, 1, 1},
+                {1, 2, 0, 2, 0, 1},
+                {0, 2, 0, 2, 1, 1}
             };
 
             // Initialize Level 3
@@ -216,18 +217,18 @@ namespace Hitbox.Kombo
             int komboCombination_ = _trgtsKomboLvl2.GetLength(1) / nTargetsLvl2_;            
 
             _posHitTrgtsLvl2 = new Vector3[komboCombination_, nTargetsLvl2_];
-            Debug.Log("_posHitTrgtsLvl2 Length 1 = " + _posHitTrgtsLvl2.GetLength(0));
-            Debug.Log("_posHitTrgtsLvl2 Length 2 = " + _posHitTrgtsLvl2.GetLength(1));
 
             // Update damage reduce
             _komboLvl++;
             _damageReduce *= 1f / _komboLvl;
+            Debug.Log("---------------------------------------------------------------------------------------------------------");
+            Debug.Log("CURRENT LEVEL = " + _komboLvl);
             Debug.Log("Damage Reduce = " + _damageReduce);
 
             int angle0_ = Random.Range(0, 360);
             int nTargets_ = _targetPropLvl1.colors.Length;
 
-            /// Generate a beautiful crown of colorized targets all over the impact  ( *-*( m )
+            // Generate a beautiful crown of colorized targets all over the impact  ( *-*( m )
             for (int i = 0; i < nTargets_; i++)
             {
                 SetTarget(pos_, i, angle0_ + i * (float)360 / nTargets_, _targetPropLvl1);
@@ -238,7 +239,7 @@ namespace Hitbox.Kombo
             int angle0_ = Random.Range(0, 360);
             int nTargets_ = _komboLinks;
 
-            /// Generate a beautiful crown of colorized targets all over the impact  ( *-*( m )
+            // Generate a beautiful crown of colorized targets all over the impact  ( *-*( m )
             for (int i = _komboTrgt; i < _komboTrgt + _komboLinks; i++)
             {
                 int trgtType_ = _trgtsKomboLvl2[_komboLvl-1, i];
@@ -256,12 +257,25 @@ namespace Hitbox.Kombo
                 }
             }
 
+            // FOR DEBUG
+            //print("VVVVVVVVVVVVVV");
+            //for (int i = 0; i < _posHitTrgtsLvl2.GetLength(0); i++)
+            //{
+            //    string _print = "";
+            //    for (int j = 0; j < _posHitTrgtsLvl2.GetLength(1); j++)
+            //    {
+            //        _print += _posHitTrgtsLvl2[i, j].Equals(Vector3.zero);
+            //        _print += " ";
+            //    }
+            //    print(_print);
+            //}
+            //print("--------------");
+
             // Check current sub Kombo combinaison
             float xG_ = 0f;
             float yG_ = 0f;
             for (int j = 0; j < _posHitTrgtsLvl2.GetLength(1); j++)
             {
-                Debug.Log(!_posHitTrgtsLvl2[_curKomboSerie, j].Equals(Vector3.zero));
                 if (!_posHitTrgtsLvl2[_curKomboSerie, j].Equals(Vector3.zero))
                 {
                     xG_ += _posHitTrgtsLvl2[_curKomboSerie, j].x / _targetPropLvl2.colors.Length;
@@ -323,11 +337,10 @@ namespace Hitbox.Kombo
                 if (_targetsList.Count == 0)
                 {
                     Debug.Log("Score = " + _score);
-                    _score = 0;
-                    _damageReduce = 1;
-
                     this.gameObject.GetComponentInParent<GameManager>().SetScore(_score);
 
+                    //_score = 0;
+                    //_damageReduce = 1;
                     Destroy(this.gameObject); // good bye
                 }
             }
