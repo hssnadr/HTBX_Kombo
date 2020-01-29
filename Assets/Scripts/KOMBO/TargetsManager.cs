@@ -234,6 +234,8 @@ namespace Hitbox.Kombo
             int komboCombination_ = _trgtsKomboLvl2.GetLength(1) / nTargetsLvl2_;
             // Update damage reduce
             _damageReduce *= 1f / _komboLvl;
+            //_damageReduce = 1 - (Mathf.Log10(_komboLvl));
+            _damageReduce = Mathf.Clamp(_damageReduce, 0f, 1f);
 
             // Set current kombo
             if (_komboLvl < _trgtsKomboLvl2.GetLength(0))

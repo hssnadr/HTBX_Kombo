@@ -50,8 +50,8 @@ MonoBehaviour:
     - {r: 0.23766047, g: 0.15801886, b: 0.6320754, a: 1}
     - {r: 0.23921569, g: 0.15686274, b: 0.6313726, a: 1}
     - {r: 0.23921569, g: 0.16078432, b: 0.63529414, a: 1}
-    _rotSpeed: 200
-    _transSpeed: 100
+    _rotSpeed: 150
+    _transSpeed: 70
     _lifeTime: 3
     _scale: 35
   _targetPropLvl2:
@@ -61,15 +61,15 @@ MonoBehaviour:
     - {r: 0, g: 0.49014425, b: 1, a: 1}
     _rotSpeed: 150
     _transSpeed: 60
-    _lifeTime: 10
-    _scale: 30
+    _lifeTime: 5
+    _scale: 25
   _targetPropLvl3:
     _colors:
     - {r: 1, g: 1, b: 1, a: 1}
     _rotSpeed: -300
     _transSpeed: 0
-    _lifeTime: 1.5
-    _scale: 15
+    _lifeTime: 1
+    _scale: 20
   _score: 0
   _coefDamageReduce: 4
   _komboLinks: 2
