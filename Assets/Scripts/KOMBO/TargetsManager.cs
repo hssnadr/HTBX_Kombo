@@ -114,6 +114,8 @@ namespace Hitbox.Kombo
         [SerializeField]
         private float _score;
         private float _damageReduce;
+        [SerializeField]
+        private float _coefDamageReduce = 3f;
 
         // On Hit level 1
         private int[,] _trgtsKomboLvl2 = new int[4,6];
@@ -145,15 +147,13 @@ namespace Hitbox.Kombo
             _targetPropLvl2.Level = 2;
             _targetPropLvl3.Level = 3;
 
-            // Initialize Level 1            
-
             // Initialize Level 2 /// Set Kombo
             _trgtsKomboLvl2 = new int[,]
             {
-                {0, 1, 0, 1, 2, 2},
                 {0, 1, 0, 2, 1, 2},
-                {1, 2, 0, 2, 0, 1},
-                {0, 2, 0, 2, 1, 1}
+                {1, 2, 1, 0, 0, 2},
+                {0, 0, 1, 2, 1, 2},
+                {0, 1, 0, 1, 2, 2}
             };
             _curKomboSequence = new int[6];
 
@@ -184,7 +184,7 @@ namespace Hitbox.Kombo
                 {
                     if (hit.collider != null && hit.transform.tag == "target")
                     {
-                        _score += 1f * _damageReduce; // Update score
+                        _score += _coefDamageReduce * _damageReduce; // Update score
 
                         int targetLvl_ = hit.collider.GetComponent<TargetBehavior>().GetTargetLevel();
                         switch (targetLvl_)
@@ -232,6 +232,8 @@ namespace Hitbox.Kombo
             _komboTrgt = 0;
             int nTargetsLvl2_ = _targetPropLvl2.colors.Length;
             int komboCombination_ = _trgtsKomboLvl2.GetLength(1) / nTargetsLvl2_;
+            // Update damage reduce
+            _damageReduce *= 1f / _komboLvl;
 
             // Set current kombo
             if (_komboLvl < _trgtsKomboLvl2.GetLength(0))
@@ -248,10 +250,9 @@ namespace Hitbox.Kombo
 
             _posHitTrgtsLvl2 = new Vector3[komboCombination_, nTargetsLvl2_];
 
-            // Update damage reduce
-            _damageReduce *= 1f / _komboLvl;
             Debug.Log("---------------------------------------------------------------------------------------------------------");
             Debug.Log("CURRENT LEVEL = " + _komboLvl);
+            Debug.Log("CURRENT SCORE = " + _score);
             Debug.Log("Damage Reduce = " + _damageReduce);
 
             int angle0_ = Random.Range(0, 360);
@@ -272,7 +273,6 @@ namespace Hitbox.Kombo
             for (int i = _komboTrgt; i < _komboTrgt + _komboLinks; i++)
             {
                 int trgtType_;
-                // trgtType_ = _trgtsKomboLvl2[_komboLvl - 1, i];
                 trgtType_ = _curKomboSequence[i];                
 
                 SetTarget(pos_, trgtType_, angle0_ + i * (float)360 / nTargets_, _targetPropLvl2);

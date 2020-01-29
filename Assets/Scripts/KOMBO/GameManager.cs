@@ -50,6 +50,8 @@ namespace Hitbox.Kombo
             var ref_ = gaugReference_.GetComponent<ScoreGaugeBehavior>();
             yield return StartCoroutine(ref_.EntranceAnimation());
 
+            yield return new WaitForSeconds(0.75f);
+
             //// Animation Victory / Defeat
             if (scorePlayer_ > _scoreReference)
             {
