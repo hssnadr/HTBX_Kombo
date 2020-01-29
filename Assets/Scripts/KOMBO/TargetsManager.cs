@@ -117,6 +117,8 @@ namespace Hitbox.Kombo
 
         // On Hit level 1
         private int[,] _trgtsKomboLvl2 = new int[4,6];
+        private System.Random _random = new System.Random();
+        private int[] _curKomboSequence;
         [SerializeField]
         private int _komboLinks;     // Number of targets per kombo init
         private int _komboLvl;       // Current Kombo level
@@ -153,6 +155,7 @@ namespace Hitbox.Kombo
                 {1, 2, 0, 2, 0, 1},
                 {0, 2, 0, 2, 1, 1}
             };
+            _curKomboSequence = new int[6];
 
             // Initialize Level 3
         }
@@ -205,21 +208,47 @@ namespace Hitbox.Kombo
             }
         }
 
+        void Shuffle(int[] array)
+        {
+            int p = array.Length;
+            for (int n = p - 1; n > 0; n--)
+            {
+                int r = _random.Next(0, n);
+                int t = array[r];
+                array[r] = array[n];
+                array[n] = t;
+            }
+        }
+
         /// <summary>
         /// TARGET LEVEL GENERATOR
         /// </summary>
         private void SetTargetsLvl1(Vector3 pos_)
         {
+            _komboLvl++;
+
             // Reset Kombo parameters
             _curKomboSerie = 0;
             _komboTrgt = 0;
             int nTargetsLvl2_ = _targetPropLvl2.colors.Length;
-            int komboCombination_ = _trgtsKomboLvl2.GetLength(1) / nTargetsLvl2_;            
+            int komboCombination_ = _trgtsKomboLvl2.GetLength(1) / nTargetsLvl2_;
+
+            // Set current kombo
+            if (_komboLvl < _trgtsKomboLvl2.GetLength(0))
+            {
+                for (int i = 0; i < _curKomboSequence.Length; i++)
+                {
+                    _curKomboSequence[i] = _trgtsKomboLvl2[_komboLvl, i];
+                }
+            }
+            else
+            {
+                Shuffle(_curKomboSequence); // Shuffle last kombo sequence
+            }
 
             _posHitTrgtsLvl2 = new Vector3[komboCombination_, nTargetsLvl2_];
 
             // Update damage reduce
-            _komboLvl++;
             _damageReduce *= 1f / _komboLvl;
             Debug.Log("---------------------------------------------------------------------------------------------------------");
             Debug.Log("CURRENT LEVEL = " + _komboLvl);
@@ -242,7 +271,10 @@ namespace Hitbox.Kombo
             // Generate a beautiful crown of colorized targets all over the impact  ( *-*( m )
             for (int i = _komboTrgt; i < _komboTrgt + _komboLinks; i++)
             {
-                int trgtType_ = _trgtsKomboLvl2[_komboLvl-1, i];
+                int trgtType_;
+                // trgtType_ = _trgtsKomboLvl2[_komboLvl - 1, i];
+                trgtType_ = _curKomboSequence[i];                
+
                 SetTarget(pos_, trgtType_, angle0_ + i * (float)360 / nTargets_, _targetPropLvl2);
             }
             _komboTrgt += _komboLinks;
