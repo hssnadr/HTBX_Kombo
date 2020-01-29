@@ -67,16 +67,21 @@ namespace Hitbox.Kombo
             _scoreReference = scorePlayer_;
 
             _isPlaying = true;
+
+            SendSaveModeAnimation(); // Save Mode
         }
 
         private void SendEndGameAnimation() {
             serialController.EndGame();
         }
 
+        private void SendSaveModeAnimation()
+        {
+            serialController.ScreenSaver();
+        }
+
         public void GetInteractPoint(Vector2 pos2D_)
         {
-            Debug.Log("Interact point at" + pos2D_);
-
             if (_isPlaying)
             {
                 if (targetsManager == null)

@@ -56,7 +56,6 @@ namespace Hitbox.Kombo
         void OnMouseDown()
         {
             Vector3 mousePosition = Input.mousePosition;
-            Debug.Log(mousePosition);
             if (!_hitboxCamera.orthographic)
                 mousePosition.z = this.transform.position.z;
             SetImpact(_debugCamera.ScreenToWorldPoint(mousePosition));

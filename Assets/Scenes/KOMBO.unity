@@ -426,6 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b00689869b39e4c49a16619963d02aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serialController: {fileID: 1644190784}
   _komboPrefab: {fileID: 9001676904683018355, guid: 66d4b3c072c845745b4ca3abe2633863,
     type: 3}
   _scoreGaugePrefab: {fileID: 4782973752803891191, guid: 85dc02e5817874d42af4669419da9691,

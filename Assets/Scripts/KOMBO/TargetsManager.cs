@@ -8,6 +8,7 @@ namespace Hitbox.Kombo
     [System.Serializable]
     public struct TargetProperties
     {
+        private int _level;
         [SerializeField]
         private Color[] _colors;
         [SerializeField]
@@ -18,6 +19,18 @@ namespace Hitbox.Kombo
         private float _lifeTime;
         [SerializeField]
         private float _scale;
+
+        public int Level
+        {
+            set
+            {
+                _level = value;
+            }
+            get
+            {
+                return _level;
+            }
+        }
 
         public Color[] colors
         {
@@ -77,15 +90,14 @@ namespace Hitbox.Kombo
             }
         }
 
-        public TargetProperties(Color[] colors_, float lifeTime_, float scale_, float transSpeed_, float rotSpeed_)
-        {_colors = colors_; _lifeTime = lifeTime_; _scale = scale_; _transSpeed = transSpeed_; _rotSpeed = rotSpeed_; }
+        public TargetProperties(int targetLevel_, Color[] colors_, float lifeTime_, float scale_, float transSpeed_, float rotSpeed_)
+        { _level = targetLevel_; _colors = colors_; _lifeTime = lifeTime_; _scale = scale_; _transSpeed = transSpeed_; _rotSpeed = rotSpeed_; }
     }
 
     public class TargetsManager : MonoBehaviour
     {
         public GameObject targetPrefab;
         private List<GameObject> _targetsList;			// list of current targets
-        private List<Vector3> _reachTargetsPosition;	// position of reached targets
 
         /// <summary>
         /// Here are specified the caracteristics for each target level
@@ -104,12 +116,15 @@ namespace Hitbox.Kombo
         private float _damageReduce;
 
         // On Hit level 1
-        [SerializeField]
         private int[,] _trgtsKomboLvl2 = new int[3,6];
         [SerializeField]
-        private int _komboLinks = 2; // Number of targets per kombo init
-        private int _komboLvl = 0;  // Current Kombo level
-        private int _komboHit;      // Current Kombo hit progression
+        private int _komboLinks;     // Number of targets per kombo init
+        private int _komboLvl;       // Current Kombo level
+        private int _komboTrgt;      // Current Kombo hit apparition
+        private int _curKomboSerie;    // Current Kombo serie
+
+        // On hit level 2
+        private Vector3[,] _posHitTrgtsLvl2; // Hit positions of targets level 2 into a single kombo
 
         // On hit level 3
         private int _nHitLvl3 = 0;
@@ -119,12 +134,14 @@ namespace Hitbox.Kombo
         {
             _hitboxCamera = this.gameObject.GetComponentInParent<Camera>();
             _targetsList = new List<GameObject>();
-            _reachTargetsPosition = new List<Vector3>();
 
             /// Initialize target propertie levels
             //_targetPropLvl1 = new TargetProperties(new Color[] { Color.white }, 3.0f, 40.0f, 85.0f, 0.0f);      /// LEVEL 1
             //_targetPropLvl2 = new TargetProperties(new Color[] { Color.white }, 2.0f, 30.0f, 120.0f, 300.0f);   /// LEVEL 2
             //_targetPropLvl3 = new TargetProperties(new Color[] { Color.white }, 1.0f, 30.0f, 200.0f, -300.0f);  /// LEVEL 3
+            _targetPropLvl1.Level = 1;
+            _targetPropLvl2.Level = 2;
+            _targetPropLvl3.Level = 3;
 
             // Initialize Level 1            
 
@@ -135,19 +152,18 @@ namespace Hitbox.Kombo
                 {0, 1, 0, 2, 1, 2},
                 {1, 2, 0, 2, 1, 1},
             };
-            _komboLvl = 0; // First Kombo level
-            _komboHit = 0;
 
             // Initialize Level 3
         }
 
         private void Start()
         {
-            SetTargetsLvl1(this.transform.position);
-
+            _komboLvl = 0; // First Kombo level
+            _komboLinks = 2;
             _score = 0f;
             _damageReduce = 1f;
-    }
+            SetTargetsLvl1(this.transform.position);
+        }
 
         public void GetImpact(Vector2 position2D_)
         {
@@ -164,7 +180,7 @@ namespace Hitbox.Kombo
                 {
                     if (hit.collider != null && hit.transform.tag == "target")
                     {
-                        _score += 1f * _damageReduce;
+                        _score += 1f * _damageReduce; // Update score
 
                         int targetLvl_ = hit.collider.GetComponent<TargetBehavior>().GetTargetLevel();
                         switch (targetLvl_)
@@ -173,7 +189,7 @@ namespace Hitbox.Kombo
                                 SetTargetsLvl2(position3D_);
                                 break;
                             case 2:
-                                SetTargetsLvl3(position3D_);
+                                SetTargetsLvl3(hit.collider.gameObject, position3D_);
                                 break;
                             case 3:
                                 ResetKombo(position3D_);
@@ -193,13 +209,28 @@ namespace Hitbox.Kombo
         /// </summary>
         private void SetTargetsLvl1(Vector3 pos_)
         {
+            // Reset Kombo parameters
+            _curKomboSerie = 0;
+            _komboTrgt = 0;
+            int nTargetsLvl2_ = _targetPropLvl2.colors.Length;
+            int komboCombination_ = _trgtsKomboLvl2.GetLength(1) / nTargetsLvl2_;            
+
+            _posHitTrgtsLvl2 = new Vector3[komboCombination_, nTargetsLvl2_];
+            Debug.Log("_posHitTrgtsLvl2 Length 1 = " + _posHitTrgtsLvl2.GetLength(0));
+            Debug.Log("_posHitTrgtsLvl2 Length 2 = " + _posHitTrgtsLvl2.GetLength(1));
+
+            // Update damage reduce
+            _komboLvl++;
+            _damageReduce *= 1f / _komboLvl;
+            Debug.Log("Damage Reduce = " + _damageReduce);
+
             int angle0_ = Random.Range(0, 360);
             int nTargets_ = _targetPropLvl1.colors.Length;
 
             /// Generate a beautiful crown of colorized targets all over the impact  ( *-*( m )
             for (int i = 0; i < nTargets_; i++)
             {
-                SetTarget(pos_, _targetPropLvl1.colors[i], angle0_ + i * (float)360 / nTargets_, _targetPropLvl1, 1);
+                SetTarget(pos_, i, angle0_ + i * (float)360 / nTargets_, _targetPropLvl1);
             }
         }
         private void SetTargetsLvl2(Vector3 pos_)
@@ -208,31 +239,61 @@ namespace Hitbox.Kombo
             int nTargets_ = _komboLinks;
 
             /// Generate a beautiful crown of colorized targets all over the impact  ( *-*( m )
-            for (int i = _komboHit; i < _komboHit + _komboLinks; i++)
+            for (int i = _komboTrgt; i < _komboTrgt + _komboLinks; i++)
             {
-                int indxColor_ = _trgtsKomboLvl2[_komboLvl, i];
-                SetTarget(pos_, _targetPropLvl2.colors[indxColor_], angle0_ + i * (float)360 / nTargets_, _targetPropLvl2, 2);
+                int trgtType_ = _trgtsKomboLvl2[_komboLvl-1, i];
+                SetTarget(pos_, trgtType_, angle0_ + i * (float)360 / nTargets_, _targetPropLvl2);
             }
-            _komboHit += _komboLinks;
+            _komboTrgt += _komboLinks;
         }
-        private void SetTargetsLvl3(Vector3 pos_)
+        private void SetTargetsLvl3(GameObject trgt_, Vector3 pos_)
         {
-            
+            int indType_ = trgt_.GetComponent<TargetBehavior>().GetTargetType();
+            for (int i = 0; i < _posHitTrgtsLvl2.GetLength(0); i++) {
+                if (_posHitTrgtsLvl2[i, indType_].Equals(Vector3.zero)) {
+                    _posHitTrgtsLvl2[i, indType_] = pos_;   // update value
+                    break; // update only once
+                }
+            }
+
+            // Check current sub Kombo combinaison
+            float xG_ = 0f;
+            float yG_ = 0f;
+            for (int j = 0; j < _posHitTrgtsLvl2.GetLength(1); j++)
+            {
+                Debug.Log(!_posHitTrgtsLvl2[_curKomboSerie, j].Equals(Vector3.zero));
+                if (!_posHitTrgtsLvl2[_curKomboSerie, j].Equals(Vector3.zero))
+                {
+                    xG_ += _posHitTrgtsLvl2[_curKomboSerie, j].x / _targetPropLvl2.colors.Length;
+                    yG_ += _posHitTrgtsLvl2[_curKomboSerie, j].y / _targetPropLvl2.colors.Length;
+
+                    if (j == _posHitTrgtsLvl2.GetLength(1) - 1) {
+                        Vector3 newPosLvl3_ = new Vector3(xG_, yG_, pos_.z);
+                        SetTarget(newPosLvl3_, 0, 0, _targetPropLvl3);   // create target level 3
+                        _curKomboSerie++;
+
+                        Debug.Log("KOMBO " + _curKomboSerie);
+                    }
+                }
+                else {
+                    break; // cancel level 3 if kombo not complete
+                }
+            }
         }
 
         private void ResetKombo(Vector3 pos_)
         {
             _nHitLvl3++;
             if (_nHitLvl3 >= _totHitLvl3) {
-                SetTargetsLvl1(pos_);
                 _nHitLvl3 = 0;
+                SetTargetsLvl1(pos_);                
             }
         }
 
         /// <summary>
         /// TARGET GENERATOR
         /// </summary>
-        private void SetTarget(Vector3 position_, Color colTarget_, float angleDirection_, TargetProperties targetProp_, int targetLvl_)
+        private void SetTarget(Vector3 position_, int targetType_, float angleDirection_, TargetProperties targetProp_)
         {
             // Instantiate target
             _targetsList.Add((GameObject)Instantiate(targetPrefab, position_, Quaternion.identity, this.gameObject.transform));
@@ -241,10 +302,11 @@ namespace Hitbox.Kombo
             GameObject target_ = _targetsList[_targetsList.Count - 1];                            // get last target which correspond to the current one
 
             // Set target properties
-            target_.GetComponent<TargetBehavior>().SetTargetLevel(targetLvl_);
+            target_.GetComponent<TargetBehavior>().SetTargetLevel(targetProp_.Level);
+            target_.GetComponent<TargetBehavior>().SetTargetType(targetType_);
             target_.GetComponent<TargetBehavior>().SetLifeTime(targetProp_.lifeTime);
             target_.GetComponent<TargetBehavior>().SetAngleDirection(angleDirection_);
-            target_.GetComponent<TargetBehavior>().SetColor(colTarget_);
+            target_.GetComponent<TargetBehavior>().SetColor(targetProp_.colors[targetType_]);
             target_.GetComponent<TargetBehavior>().SetTranslationSpeed(targetProp_.transSpeed);
             target_.GetComponent<TargetBehavior>().SetRotationAxis(position_);
             target_.GetComponent<TargetBehavior>().SetRotationSpeed(targetProp_.rotSpeed);
@@ -263,8 +325,6 @@ namespace Hitbox.Kombo
                     Debug.Log("Score = " + _score);
                     _score = 0;
                     _damageReduce = 1;
-
-                    _reachTargetsPosition.Clear();
 
                     this.gameObject.GetComponentInParent<GameManager>().SetScore(_score);
 

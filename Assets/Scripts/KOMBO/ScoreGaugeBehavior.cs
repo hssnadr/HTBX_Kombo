@@ -121,7 +121,6 @@ namespace Hitbox.Kombo
             float dScaleY_ = 8f * scale0_.y;
             Vector3 pos0_ = transform.localPosition;
             float dPosY_ = _hitboxCamera.rect.height * _hitboxCamera.orthographicSize + pos0_.y;
-            Debug.Log("new scale Y = " + dScaleY_);
 
             while (deltaTime_ <= 1f)
             {
