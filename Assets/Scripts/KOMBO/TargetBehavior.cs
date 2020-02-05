@@ -93,7 +93,6 @@ namespace Hitbox.Kombo
             _timeBorn = Time.time;
         }
 
-        
 
         public void SetScale(float scale_)
         {
@@ -117,7 +116,7 @@ namespace Hitbox.Kombo
         public void SetHit()
         {
             // Trigger explose animation = instantiate impact explosion
-            if (_hitFeedbackPrefab != null)
+            if (_hitFeedbackPrefab != null && _targetLevel == 3)
             {
                 var go = Instantiate(_hitFeedbackPrefab, this.transform.position, Quaternion.identity);
                 go.gameObject.layer = this.gameObject.layer;

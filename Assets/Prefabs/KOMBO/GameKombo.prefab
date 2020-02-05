@@ -57,8 +57,8 @@ MonoBehaviour:
   _targetPropLvl2:
     _colors:
     - {r: 1, g: 0, b: 0, a: 1}
-    - {r: 0.96692085, g: 1, b: 0, a: 1}
-    - {r: 0, g: 0.49014425, b: 1, a: 1}
+    - {r: 1, g: 1, b: 0, a: 1}
+    - {r: 0, g: 0, b: 1, a: 1}
     _rotSpeed: 150
     _transSpeed: 60
     _lifeTime: 5
@@ -71,5 +71,6 @@ MonoBehaviour:
     _lifeTime: 1
     _scale: 20
   _score: 0
+  _coefScore: 0.3
   _coefDamageReduce: 4
   _komboLinks: 2

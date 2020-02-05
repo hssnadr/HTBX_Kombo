@@ -70,6 +70,7 @@ namespace Hitbox.Kombo
 
             _isPlaying = true;
 
+            yield return new WaitForSeconds(0.3f);
             SendSaveModeAnimation(); // Save Mode
         }
 

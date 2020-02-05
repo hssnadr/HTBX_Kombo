@@ -13,7 +13,7 @@ namespace Hitbox.Kombo
 
         private float _pFinalScore = 100f;
         [SerializeField]
-        private float _maxScore = 100f;
+        private float _maxScore = 150f;
 
         private Camera _hitboxCamera;
         [SerializeField]

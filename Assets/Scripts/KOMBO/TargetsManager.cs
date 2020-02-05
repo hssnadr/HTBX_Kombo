@@ -113,6 +113,8 @@ namespace Hitbox.Kombo
 
         [SerializeField]
         private float _score;
+        [SerializeField]
+        private float _coefScore = 1f;
         private float _damageReduce;
         [SerializeField]
         private float _coefDamageReduce = 3f;
@@ -184,7 +186,7 @@ namespace Hitbox.Kombo
                 {
                     if (hit.collider != null && hit.transform.tag == "target")
                     {
-                        _score += _coefDamageReduce * _damageReduce; // Update score
+                        _score += _coefScore * _coefDamageReduce * _damageReduce; // Update score
 
                         int targetLvl_ = hit.collider.GetComponent<TargetBehavior>().GetTargetLevel();
                         switch (targetLvl_)
@@ -234,7 +236,6 @@ namespace Hitbox.Kombo
             int komboCombination_ = _trgtsKomboLvl2.GetLength(1) / nTargetsLvl2_;
             // Update damage reduce
             _damageReduce *= 1f / _komboLvl;
-            //_damageReduce = 1 - (Mathf.Log10(_komboLvl));
             _damageReduce = Mathf.Clamp(_damageReduce, 0f, 1f);
 
             // Set current kombo
@@ -274,10 +275,13 @@ namespace Hitbox.Kombo
             // Generate a beautiful crown of colorized targets all over the impact  ( *-*( m )
             for (int i = _komboTrgt; i < _komboTrgt + _komboLinks; i++)
             {
-                int trgtType_;
-                trgtType_ = _curKomboSequence[i];                
+                if(i < _curKomboSequence.Length)
+                {
+                    int trgtType_;
+                    trgtType_ = _curKomboSequence[i];
 
-                SetTarget(pos_, trgtType_, angle0_ + i * (float)360 / nTargets_, _targetPropLvl2);
+                    SetTarget(pos_, trgtType_, angle0_ + i * (float)360 / nTargets_, _targetPropLvl2);
+                }
             }
             _komboTrgt += _komboLinks;
         }

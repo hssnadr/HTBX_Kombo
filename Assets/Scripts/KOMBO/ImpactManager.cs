@@ -50,8 +50,8 @@ namespace Hitbox.Kombo
         private void SetImpact(Vector2 position2D_)
         {
             // Display a mark where impacts are detected
-            Vector3 pos3DSprite_ = new Vector3(position2D_.x, position2D_.y, this.gameObject.transform.position.z + 100f); // set sprite in front of Hitbox camera
-            Instantiate(_impactPrefabs, pos3DSprite_, Quaternion.identity, this.gameObject.transform);
+            //Vector3 pos3DSprite_ = new Vector3(position2D_.x, position2D_.y, this.gameObject.transform.position.z + 100f); // set sprite in front of Hitbox camera
+            //Instantiate(_impactPrefabs, pos3DSprite_, Quaternion.identity, this.gameObject.transform);
 
             this.gameObject.GetComponent<GameManager>().GetInteractPoint(position2D_); 
         }
