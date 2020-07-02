@@ -1,11 +1,14 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using CRI.HitBoxTemplate.Example;
 using UnityEngine;
 
 namespace Hitbox.Kombo
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField]
+        private ExampleSerialController serialController ;
+
         [SerializeField]
         private GameObject _komboPrefab;
         [SerializeField]
@@ -23,6 +26,7 @@ namespace Hitbox.Kombo
         private bool _isPlaying = true;
 
         public void SetScore(float newScore_) {
+            SendEndGameAnimation();
             StartCoroutine(DisplayScores(newScore_));
         }
 
@@ -46,6 +50,8 @@ namespace Hitbox.Kombo
             var ref_ = gaugReference_.GetComponent<ScoreGaugeBehavior>();
             yield return StartCoroutine(ref_.EntranceAnimation());
 
+            yield return new WaitForSeconds(0.3f);
+
             //// Animation Victory / Defeat
             if (scorePlayer_ > _scoreReference)
             {
@@ -63,12 +69,22 @@ namespace Hitbox.Kombo
             _scoreReference = scorePlayer_;
 
             _isPlaying = true;
+
+            yield return new WaitForSeconds(0.3f);
+            SendSaveModeAnimation(); // Save Mode
+        }
+
+        private void SendEndGameAnimation() {
+            serialController.EndGame();
+        }
+
+        private void SendSaveModeAnimation()
+        {
+            serialController.ScreenSaver();
         }
 
         public void GetInteractPoint(Vector2 pos2D_)
         {
-            Debug.Log("Interact point at" + pos2D_);
-
             if (_isPlaying)
             {
                 if (targetsManager == null)
@@ -82,7 +98,7 @@ namespace Hitbox.Kombo
                 }
                 else
                 {
-                    // Kombo game is running
+                    // Kombo game is already running
                     targetsManager.GetImpact(pos2D_);
                 }
             }           

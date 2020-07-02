@@ -12,6 +12,10 @@ namespace Hitbox.Kombo
         [SerializeField]
         private Camera _debugCamera;
 
+        float _timerOffHit0;
+        [SerializeField]
+        float _delayOffHit = 0.2f;
+
         [SerializeField]
         private GameObject _impactPrefabs;
 
@@ -33,11 +37,11 @@ namespace Hitbox.Kombo
         private void OnHit(object sender, ImpactPointControlEventArgs e)
         {
             // ----------- A CHECKER IF UTILE OU PAS -----------
-            //if (Time.time - timerOffHit0 > delayOffHit)
-            //{
-            //    SetImpact(e.impactPosition);
-            //    timerOffHit0 = Time.time;
-            //}
+            if (Time.time - _timerOffHit0 > _delayOffHit)
+            {
+                SetImpact(e.impactPosition);
+                _timerOffHit0 = Time.time;
+            }
             // -------------------------------------------------
 
             SetImpact(e.impactPosition);
@@ -46,8 +50,8 @@ namespace Hitbox.Kombo
         private void SetImpact(Vector2 position2D_)
         {
             // Display a mark where impacts are detected
-            Vector3 pos3DSprite_ = new Vector3(position2D_.x, position2D_.y, this.gameObject.transform.position.z + 100f); // set sprite in front of Hitbox camera
-            Instantiate(_impactPrefabs, pos3DSprite_, Quaternion.identity, this.gameObject.transform);
+            //Vector3 pos3DSprite_ = new Vector3(position2D_.x, position2D_.y, this.gameObject.transform.position.z + 100f); // set sprite in front of Hitbox camera
+            //Instantiate(_impactPrefabs, pos3DSprite_, Quaternion.identity, this.gameObject.transform);
 
             this.gameObject.GetComponent<GameManager>().GetInteractPoint(position2D_); 
         }
@@ -56,7 +60,6 @@ namespace Hitbox.Kombo
         void OnMouseDown()
         {
             Vector3 mousePosition = Input.mousePosition;
-            Debug.Log(mousePosition);
             if (!_hitboxCamera.orthographic)
                 mousePosition.z = this.transform.position.z;
             SetImpact(_debugCamera.ScreenToWorldPoint(mousePosition));

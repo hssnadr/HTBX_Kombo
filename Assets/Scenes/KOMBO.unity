@@ -426,11 +426,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b00689869b39e4c49a16619963d02aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serialController: {fileID: 1644190784}
   _komboPrefab: {fileID: 9001676904683018355, guid: 66d4b3c072c845745b4ca3abe2633863,
     type: 3}
   _scoreGaugePrefab: {fileID: 4782973752803891191, guid: 85dc02e5817874d42af4669419da9691,
     type: 3}
-  _scoreReference: 25
+  _scoreReference: 0
   _playerColor: {r: 0.3843137, g: 0.5848337, b: 0.8980392, a: 1}
   _referenceColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &833152890
@@ -446,6 +447,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _debugCamera: {fileID: 597049765}
+  _delayOffHit: 0.2
   _impactPrefabs: {fileID: 7726583474970102550, guid: 8315c5c3b12da6142ac39f6d0b62bab4,
     type: 3}
 --- !u!1 &1523793887
@@ -544,11 +546,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serialSettings:
-  - touchControlSerialPortName: COM3
-    ledControlSerialPortName: COM4
+  - touchControlSerialPortName: COM4
+    ledControlSerialPortName: COM3
     playerCamera: {fileID: 833152886}
-    impactThreshold: 3
-    delayOffHit: 2
+    impactThreshold: 5
+    delayOffHit: 3
     displayDatapoints: 0
     ignoreBlackBackground: 0
   _serialControllerPrefab: {fileID: 1333724754242966, guid: 3c6272710dc8ff64c914abfa898b6a6a,

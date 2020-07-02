@@ -13,7 +13,7 @@ namespace Hitbox.Kombo
 
         private float _pFinalScore = 100f;
         [SerializeField]
-        private float _maxScore = 100f;
+        private float _maxScore = 150f;
 
         private Camera _hitboxCamera;
         [SerializeField]
@@ -87,6 +87,8 @@ namespace Hitbox.Kombo
             dScaleY_ -= scale0_.y / 2f;
             dScaleY_ *= 2f;
 
+            dScaleY_ = 9f * scale0_.y; // Correction
+
             while (deltaTime_ <= 1f)
             {
                 deltaTime_ = animSpeed_ * (Time.time - timerStart_);
@@ -118,10 +120,9 @@ namespace Hitbox.Kombo
             float animSpeed_ = 0.8f;
             Color color0_ = _gaugRenderer.material.color;
             Vector3 scale0_ = transform.localScale; // inital scale
-            float dScaleY_ = 8f * scale0_.y;
+            float dScaleY_ = 9f * scale0_.y;
             Vector3 pos0_ = transform.localPosition;
             float dPosY_ = _hitboxCamera.rect.height * _hitboxCamera.orthographicSize + pos0_.y;
-            Debug.Log("new scale Y = " + dScaleY_);
 
             while (deltaTime_ <= 1f)
             {
